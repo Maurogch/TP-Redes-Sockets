@@ -7,9 +7,11 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class MyServerSocket {
     private ServerSocket server;
+    Scanner sc = new Scanner (System.in);
 
     public MyServerSocket(String ipAddress) throws Exception {
         if (ipAddress != null && !ipAddress.isEmpty())
@@ -24,7 +26,7 @@ public class MyServerSocket {
         String clientAddress = client.getInetAddress().getHostAddress();
 
         PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-        out.println("Telnet " + server.getInetAddress().getHostAddress() + " port " + server.getLocalPort() );
+        out.println("Conected to " + server.getInetAddress().getHostAddress() + " port " + server.getLocalPort() );
         out.println("Close connection with 'x'");
         out.flush();
 
@@ -39,7 +41,6 @@ public class MyServerSocket {
                     out.println("Connection closing by host request...");
                     out.close();
                     in.close();
-                    server.close();
                     client.close();
                     System.out.println("Server is down");
                     break;
@@ -47,7 +48,10 @@ public class MyServerSocket {
                     System.out.println("Error al cerrar la conexión");
                 }
             }
-            System.out.println("\r\nMessage from " + clientAddress + ": " + data); //print to console data inputted
+            System.out.println("\r\nMessage from " + clientAddress + ": " + data + "\n"); //print to console data inputted
+            System.out.print("Escriba respuesta: ");
+            out.println("(Esperando respuesta del servidor)");
+            out.println(sc.nextLine());
         }
     }
 

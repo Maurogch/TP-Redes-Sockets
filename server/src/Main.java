@@ -14,7 +14,9 @@ public class Main {
                     "Host=" + app.getSocketAddress().getHostAddress() +
                     " Port=" + app.getPort());
 
-            app.listen();
+            while (true) {
+                app.listen();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             app.closeConnection();
