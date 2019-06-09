@@ -48,7 +48,7 @@ public class MyServerSocket {
     public void closeConnection(){
         try {
             server.close();
-        } catch (IOException e) {
+        } catch (IOException|NullPointerException e) {
             e.printStackTrace();
         }
     }

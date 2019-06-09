@@ -17,20 +17,27 @@ public class ThreadWrite extends Thread {
             String input;
             while ((input = br.readLine()) != null)
             {
-                sb.append(input).append(" "); //String builder should be used in threads
+                sb.append(input); //String builder should be used in threads
 
                 if(!sb.toString().contains(";")){
                     System.out.println("Missing ; in message");
                 }else{
                     String[] arr = sb.toString().split(";", 2); //split id and message
                     String id = arr[0];
-                    String message = "Host: " + arr[1];
+                    //String message = "Host: " + arr[1]; //When writing to telnet white "host:" first
+                    String message = arr[1];
                     int idNumber = Integer.parseInt(id);
 
                     if(idNumber + 1 > connections.size())
                         System.out.println("Invalid id number");
-                    else
-                        connections.get(idNumber).getOut().println(message);
+                    else{
+                        if(message.equals("close")){
+                            connections.get(idNumber).getOut().println("Closing connection by server request...");
+                            connections.get(idNumber).getClient().close();
+                        }else
+                            connections.get(idNumber).getOut().println(message); //send message to client
+                    }
+
                 }
 
                 sb.setLength(0); //clear stringBuilder

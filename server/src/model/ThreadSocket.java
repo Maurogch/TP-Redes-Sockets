@@ -11,6 +11,7 @@ public class ThreadSocket extends Thread{
     private Socket client;
     private String serverIp;
     private String serverPort;
+    private String clientAddress;
     private PrintWriter out;
 
     public ThreadSocket(int idSocket, Socket client, String serverIp, Integer serverPort){
@@ -24,13 +25,13 @@ public class ThreadSocket extends Thread{
             System.out.println("Error geting outputstream to connection");
             e.printStackTrace();
         }
+        clientAddress = client.getInetAddress().getHostAddress();
     }
 
     @Override
     public void run(){
         try {
             String data;
-            String clientAddress = client.getInetAddress().getHostAddress();
 
             out.println("Connected to " + serverIp + " port " + serverPort);
             out.println("Close connection with 'x'");
@@ -45,16 +46,23 @@ public class ThreadSocket extends Thread{
                     out.close();
                     in.close();
                     client.close();
-                    System.out.println("Connection with " + clientAddress + " id: " + " closed");
+                    System.out.println("Connection with " + clientAddress + " ID: " + idSocket + " closed");
                     break;
                 }
                 //print to console data inputted
-                System.out.println("Message from " + clientAddress + " id: " + idSocket + ": " + data);
+                System.out.println("Message from " + clientAddress + " ID: " + idSocket + ": " + data);
             }
-            if(!client.isClosed()) //if socket is not closed and it gets here (escaped the while) connection was lost
-                System.out.println("Connection lost with " + clientAddress + " id: " + idSocket);
+            if(!client.isClosed()) { //if socket is not closed and it gets here (escaped the while) connection was lost
+                System.out.println("Connection lost with " + clientAddress + " ID: " + idSocket);
+                client.close();
+            }
         } catch (IOException e) {
-            System.out.println("Error closing connection");
+            System.out.println("Connection lost with " + clientAddress + " ID: " + idSocket);
+            try {
+                client.close();
+            } catch (IOException ex) {
+                System.out.println("Error closing connection with " + clientAddress + " ID: " + idSocket);
+            }
         }catch (Exception e) {
             e.printStackTrace();
         }

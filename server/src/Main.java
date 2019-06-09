@@ -1,4 +1,3 @@
-import model.ThreadWrite;
 import socket.MyServerSocket;
 
 import java.util.Scanner;
@@ -13,23 +12,28 @@ public class Main {
          * - null
          * if null uses ip assigned by DHCP
          */
-        String ipaddres = null;
+        String ipAddress = null;
         int port = 50000;
 
         try {
-            app = new MyServerSocket(ipaddres, port);
+            app = new MyServerSocket(ipAddress, port);
             System.out.println("\r\nRunning Server: " +
                     "Host=" + app.getSocketAddress().getHostAddress() +
                     " Port=" + app.getPort());
             System.out.println("Responses made with id of connection separated by ;");
             System.out.println("Example: 0;message here");
+            System.out.println("Close connection with a client by using ID;close\n");
 
             while (true) {
                 app.listen();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            app.closeConnection();
+            try {
+                app.closeConnection();
+            } catch (NullPointerException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }
