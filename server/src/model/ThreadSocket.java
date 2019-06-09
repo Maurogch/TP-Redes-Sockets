@@ -5,59 +5,70 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class ThreadSocket extends Thread{
+    private int idSocket;
     private Socket client;
     private String serverIp;
     private String serverPort;
+    private PrintWriter out;
 
-    public ThreadSocket(Socket client, String serverIp, Integer serverPort){
+    public ThreadSocket(int idSocket, Socket client, String serverIp, Integer serverPort){
+        this.idSocket = idSocket;
         this.client = client;
         this.serverIp = serverIp;
         this.serverPort = serverPort.toString();
+        try {
+            out = new PrintWriter(client.getOutputStream(), true);
+        } catch (IOException e) {
+            System.out.println("Error geting outputstream to connection");
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void run(){
         try {
             String data;
-            Scanner sc = new Scanner (System.in);
             String clientAddress = client.getInetAddress().getHostAddress();
 
-            PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-            out.println("Conected to " + serverIp + " port " + serverPort);
+            out.println("Connected to " + serverIp + " port " + serverPort);
             out.println("Close connection with 'x'");
             out.flush();
 
-            System.out.println("New connection from " + clientAddress);
+            System.out.println("New connection from " + clientAddress + " ID: " + idSocket);
 
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(client.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             while ( (data = in.readLine()) != null ) { //read host inputs
                 if ((data.equals("x"))){  // if x is inputted close connection
-                    try {
-                        out.println("Cerrando la conexión por pedido del cliente...");
-                        out.close();
-                        in.close();
-                        client.close();
-                        System.out.println("Connection with " + clientAddress + " closed");
-                        break;
-                    } catch (IOException e) {
-                        System.out.println("Error al cerrar la conexión");
-                    }
+                    out.println("Closing connection by request of client...");
+                    out.close();
+                    in.close();
+                    client.close();
+                    System.out.println("Connection with " + clientAddress + " id: " + " closed");
+                    break;
                 }
-                System.out.println("Message from " + clientAddress + ": " + data); //print to console data inputted
-                System.out.print("Escriba respuesta: ");
-                out.println("(Esperando respuesta del servidor)");
-                out.println(sc.nextLine());
-                out.flush();
+                //print to console data inputted
+                System.out.println("Message from " + clientAddress + " id: " + idSocket + ": " + data);
             }
+            if(!client.isClosed()) //if socket is not closed and it gets here (escaped the while) connection was lost
+                System.out.println("Connection lost with " + clientAddress + " id: " + idSocket);
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
+            System.out.println("Error closing connection");
+        }catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    public int getIdSocket() {
+        return idSocket;
+    }
+
+    public Socket getClient() {
+        return client;
+    }
+
+    public PrintWriter getOut() {
+        return out;
+    }
 }

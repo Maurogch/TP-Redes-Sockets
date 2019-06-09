@@ -1,6 +1,8 @@
 package socket;
 
 import model.ThreadSocket;
+import model.ThreadWrite;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -23,9 +25,15 @@ public class MyServerSocket {
     }
 
     public void listen() throws Exception {
+        ThreadWrite threadWrite = new ThreadWrite();
+        threadWrite.start();
+
         while (true) {
             Socket client = this.server.accept();
-            new ThreadSocket(client, ipAddres, port).start(); //new thread for every new connection
+            ThreadSocket threadSocket = new ThreadSocket(
+                    threadWrite.getConnectionsSize(), client, ipAddres, port); //new thread for every new connection
+            threadSocket.start();
+            threadWrite.addConnection(threadSocket);
         }
     }
 
