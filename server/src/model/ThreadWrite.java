@@ -28,7 +28,9 @@ public class ThreadWrite extends Thread {
                     String message = arr[1];
                     int idNumber = Integer.parseInt(id);
 
-                    if(idNumber + 1 > connections.size())
+                    if(idNumber == -1){ //Broadcast
+                        connections.forEach(c -> c.getOut().println(message));
+                    } else if(idNumber + 1 > connections.size()) //Check is idNumber is valid
                         System.out.println("Invalid id number");
                     else{
                         if(message.equals("close")){
