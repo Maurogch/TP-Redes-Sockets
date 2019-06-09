@@ -23,7 +23,10 @@ public class MyClientSocket extends Thread{
             //States
             System.out.println("The socket is connected: " + socket.isConnected());
             System.out.println("The socket is bounded: " + socket.isBound());
-        } catch (ConnectException e) {
+        }catch (IllegalArgumentException e){
+            System.out.println("Invalid port number, out of range");
+            System.exit(0);
+        }catch (ConnectException e) {
             System.out.println("Connection refused for that port (port is closed)");
             System.exit(0);
         } catch (SocketTimeoutException e){

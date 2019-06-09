@@ -1,11 +1,10 @@
 import socket.MyServerSocket;
 
-import java.util.Scanner;
+import java.net.BindException;
 
 public class Main {
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner (System.in);
         MyServerSocket app = null;
         /**Options: - 127.0.0.1
          * - 0.0.0.0
@@ -27,7 +26,11 @@ public class Main {
             while (true) {
                 app.listen();
             }
-        } catch (Exception e) {
+        } catch (BindException e){
+            System.out.println("Ip address for server is not valid");
+        } catch (IllegalArgumentException e){
+            System.out.println("Port value is out of range for server");
+        } catch(Exception e) {
             e.printStackTrace();
             try {
                 app.closeConnection();
