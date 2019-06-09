@@ -1,57 +1,31 @@
 package socket;
 
-import java.io.BufferedReader;
+import model.ThreadSocket;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class MyServerSocket {
     private ServerSocket server;
-    Scanner sc = new Scanner (System.in);
+    private String ipAddres;
+    private int port;
 
-    public MyServerSocket(String ipAddress) throws Exception {
+
+    public MyServerSocket(String ipAddress, int port) throws Exception {
         if (ipAddress != null && !ipAddress.isEmpty())
-            this.server = new ServerSocket(3000, 50, InetAddress.getByName(ipAddress));
+            this.server = new ServerSocket(port, 50, InetAddress.getByName(ipAddress));
         else
-            this.server = new ServerSocket(3000, 50, InetAddress.getLocalHost());
+            this.server = new ServerSocket(port, 50, InetAddress.getLocalHost());
+
+        this.ipAddres = server.getInetAddress().getHostAddress();
+        this.port = port;
     }
 
     public void listen() throws Exception {
-        String data = null;
-        Socket client = this.server.accept();
-        String clientAddress = client.getInetAddress().getHostAddress();
-
-        PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-        out.println("Conected to " + server.getInetAddress().getHostAddress() + " port " + server.getLocalPort() );
-        out.println("Close connection with 'x'");
-        out.flush();
-
-
-        System.out.println("\r\nNew connection from " + clientAddress);
-
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(client.getInputStream()));
-        while ( (data = in.readLine()) != null ) { //read host inputs
-            if ((data.equals("x"))){  // if x is inputted close connection
-                try {
-                    out.println("Connection closing by host request...");
-                    out.close();
-                    in.close();
-                    client.close();
-                    System.out.println("Server is down");
-                    break;
-                } catch (IOException e) {
-                    System.out.println("Error al cerrar la conexión");
-                }
-            }
-            System.out.println("\r\nMessage from " + clientAddress + ": " + data + "\n"); //print to console data inputted
-            System.out.print("Escriba respuesta: ");
-            out.println("(Esperando respuesta del servidor)");
-            out.println(sc.nextLine());
+        while (true) {
+            Socket client = this.server.accept();
+            new ThreadSocket(client, ipAddres, port).start(); //new thread for every new connection
         }
     }
 

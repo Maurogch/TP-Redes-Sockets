@@ -7,9 +7,11 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner (System.in);
         MyServerSocket app = null;
+        String ipaddres = null; //if null uses ip assigned by DHCP
+        int port = 50000;
 
         try {
-            app = new MyServerSocket(null);
+            app = new MyServerSocket(ipaddres, port);
             System.out.println("\r\nRunning Server: " +
                     "Host=" + app.getSocketAddress().getHostAddress() +
                     " Port=" + app.getPort());
