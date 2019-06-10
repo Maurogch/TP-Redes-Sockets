@@ -32,7 +32,7 @@ Los endpoints están formados por:
 •	Un conjunto de comportamientos que especifican detalles sobre las implementaciones del endpoint.
 
 
-###3.	¿Que es un socket?
+### 3.	¿Que es un socket?
 
 Un socket es un método para la comunicación entre un programa del cliente y un programa del servidor en una red. Se define, por lo tanto, como el punto final en una conexión. Una interfaz de programación de socket proporciona las rutinas requeridas para la comunicación entre procesos internos y aplicaciones, ya sea en el sistema local o en un entorno de red distribuido basado en TCP/IP. 
 
@@ -40,12 +40,12 @@ Una conexión socket TCP/IP se encuentra vinculada a un número de puerto para q
 De esta forma para que halla una conexión deben haber dos endpoins (sockets) con ip de origen, ip de destino, puerto de origen y puerto de destino.
 
 
-###4.	¿A qué capa del modelo TPC/IP pertenecen los sockets? ¿Porque?
+### 4.	¿A qué capa del modelo TPC/IP pertenecen los sockets? ¿Porque?
 
 Los sockets pertenecen a la capa de transporte. Esto se debe a que las aplicaciones que emplean sockets son diseñadas para utilizar tanto del modelo UDP o TCP su capa de transporte, siempre y cuando que los protocolos especificados en su capa satisfagan el tipo de conexión que requiere la aplicación.
 
 
-###5.	¿Cómo funciona el modelo cliente-servidor con TCP/IP Sockets?
+### 5.	¿Cómo funciona el modelo cliente-servidor con TCP/IP Sockets?
 
 Como se dijo antes, un socket se encarga de conectar un programa del cliente y un programa del servidor en una red. En un modelo cliente-servidor con TCP/IP Socket, cada dispositivo debe tener una dirección IP que lo identifique. 
 
@@ -64,7 +64,7 @@ Volviendo al cliente, si la conexión es aceptada, creará un socket y el client
 Ahora que el socket fue creado, el cliente y el servidor pueden comunicarse entre sí por medio de escritura o lectura de datos.
 
 
-###6.	¿Cuáles son las causas comunes por la que la conexión entre cliente/servidor falle?
+### 6.	¿Cuáles son las causas comunes por la que la conexión entre cliente/servidor falle?
 
 Las causas comunes por la que la conexión entre cliente/servidor falle son:
 
@@ -77,14 +77,14 @@ Las causas comunes por la que la conexión entre cliente/servidor falle son:
 •	Error 2315: El servidor recibió el Handshake Request (conexión con el cliente) y devolvió una respuesta del tipo non-IIOP que el cliente no puede procesar (El cliente recibe una respuesta en un lenguage que no entinede).
 
 
-###7.	Diferencias entre sockets UDP y TCP
+### 7.	Diferencias entre sockets UDP y TCP
 
 Por un lado, los sockets TCP son utilizados por aplicaciones orientadas a la conexión. Tiene integrada una verificación de errores en paquetes y retransmite los paquetes perdidos, es decir que no se han podido transmitir.
 
 Por otro lado, los UDP son utilizados por aplicaciones no orientadas a la conexión. No tiene integrada una verificación de errores en paquetes y  no retransmite los paquetes perdidos. UDP no hace un handshake como lo hace TCP
 
 
-###8.	Diferencia entre sync & async sockets?
+### 8.	Diferencia entre sync & async sockets?
 
 Cuando hablamos de algo sincrónico, nos referimos a algo que sigue un orden. Es decir, que al terminar de ejecutar el paso uno, luego ira el dos, el tres y así sucesivamente. Sin embargo, el paso tres nunca puede ocurrir antes que el paso dos; debe esperar a que este concluya para terminar.
 
