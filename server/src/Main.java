@@ -19,7 +19,7 @@ public class Main {
             System.out.println("\r\nRunning Server: " +
                     "Host=" + app.getSocketAddress().getHostAddress() +
                     " Port=" + app.getPort());
-            System.out.println("Responses made with id of connection separated by ;");
+            System.out.println("Responses are made with id of connection separated by ;");
             System.out.println("Example: 0;message here");
             System.out.println("Close connection with a client by using ID;close");
             System.out.println("Broadcast with id number -1, Example: -1;Broadcast message \n");

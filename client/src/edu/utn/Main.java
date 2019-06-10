@@ -28,7 +28,7 @@ public class Main {
         } catch (UnknownHostException e){
             System.out.println("Can't resolve host name");
         }catch (InputMismatchException e){
-            System.out.println("Port syntax wrong, must an integer");
+            System.out.println("Port syntax wrong, must be an integer");
         }catch (Exception e) {
             e.printStackTrace();
         }
