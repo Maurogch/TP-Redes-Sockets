@@ -21,6 +21,10 @@ public class Main {
             System.out.print("Input port number: ");
             port = sc.nextInt();
 
+            if(port < 1 && port > 65535){
+                throw new IllegalArgumentException();
+            }
+
             client = new MyClientSocket(InetAddress.getByName(ip),port);
 
             System.out.println("Connected to Server: " + client.getSocket().getInetAddress());
@@ -29,7 +33,9 @@ public class Main {
             System.out.println("Can't resolve host name");
         }catch (InputMismatchException e){
             System.out.println("Port syntax wrong, must be an integer");
-        }catch (Exception e) {
+        }catch (IllegalArgumentException e){
+            System.out.println("Invalid port number, out of range");
+        } catch(Exception e) {
             e.printStackTrace();
         }
     }

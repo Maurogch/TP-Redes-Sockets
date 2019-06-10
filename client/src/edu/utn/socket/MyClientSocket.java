@@ -44,7 +44,7 @@ public class MyClientSocket extends Thread{
         try {
             String hostAddress = socket.getInetAddress().getHostAddress();
             InputStreamReader in = new InputStreamReader(socket.getInputStream());
-            PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
             SocketReader reader = new SocketReader(in, hostAddress);
             SocketWriter writer = new SocketWriter(out);

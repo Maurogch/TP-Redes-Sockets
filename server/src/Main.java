@@ -12,9 +12,12 @@ public class Main {
          * if null uses ip assigned by DHCP
          */
         String ipAddress = null;
-        int port = 50000;
+        int port = 50000; // value must be between 1 and 65535
 
         try {
+            if(port < 1 && port > 65535){
+                throw new IllegalArgumentException();
+            }
             app = new MyServerSocket(ipAddress, port);
             System.out.println("\r\nRunning Server: " +
                     "Host=" + app.getSocketAddress().getHostAddress() +
